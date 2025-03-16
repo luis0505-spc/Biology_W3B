@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulación de Cadenas Alimenticias</title>
+    <style>
+      :root {
+        --primary-color: #1e1e2f;
+        --secondary-color: #283044;
+        --accent-color: #e94560;
+        --text-light: #f5f5f5;
+        --background-color: #f4f4f4;
+        --font-family: "Poppins", sans-serif;
+        --transition-speed: 0.3s;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-family);
+        background: var(--background-color);
+        color: #333;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      header {
+        background: var(--primary-color);
+        color: var(--text-light);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      header h1 {
+        margin-bottom: 0.5rem;
+      }
+      .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        z-index: 1000;
+      }
+      .nav-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--secondary-color);
+        border: none;
+        border-radius: 2rem;
+        cursor: pointer;
+        color: var(--text-light);
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+      }
+      .nav-btn:hover {
+        background: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .container {
+        max-width: 800px;
+        margin: 6rem auto 2rem;
+        padding: 0 1rem;
+        text-align: center;
+      }
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+      p.instructions {
+        margin-bottom: 2rem;
+      }
+      .draggable-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .draggable {
+        padding: 1rem;
+        background: var(--secondary-color);
+        color: var(--text-light);
+        border-radius: 5px;
+        cursor: grab;
+        user-select: none;
+      }
+      .drop-zone {
+        border: 2px dashed var(--secondary-color);
+        padding: 1rem;
+        border-radius: 5px;
+        min-width: 150px;
+        min-height: 50px;
+        display: inline-block;
+        margin: 0 0.5rem;
+      }
+      .drop-zone.over {
+        background: #ddd;
+      }
+      .message {
+        font-weight: bold;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <br>
+      <br>
+      <br>
+      <h1>Simulación de Cadenas Alimenticias</h1>
+    </header>
+
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        🌍 Planeta Tierra
+      </button>
+      <button class="nav-btn" onclick="window.location.href='humano.html'">
+        👤 Cuerpo Humano
+      </button>
+      <button class="nav-btn" onclick="window.location.href='animals.html'">
+        🐾Animales
+      </button>
+      <button class="nav-btn" onclick="window.location.href='document.html'">
+        📂Documentación
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='cadenaAlimenticia.html'"
+      >
+        ♻️Cadena Alimenticia
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='Biogeoquimicos.html'"
+      >
+        ☢️Biogeoquímicos
+      </button>
+      <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+        🐾Seres Vivos
+      </button>
+    </nav>
+
+    <div class="container">
+      <h2>Arma la Cadena Alimenticia</h2>
+      <p class="instructions">
+        Arrastra los elementos en el orden correcto:<br />
+        <strong>Productor</strong> &rarr;
+        <strong>Consumidor Primario</strong> &rarr;
+        <strong>Consumidor Secundario</strong>
+      </p>
+      <!-- Elementos para arrastrar (en orden aleatorio) -->
+      <div class="draggable-container" id="draggables">
+        <div class="draggable" draggable="true" data-type="herbivoro">
+          Conejo
+        </div>
+        <div class="draggable" draggable="true" data-type="productor">
+          Planta
+        </div>
+        <div class="draggable" draggable="true" data-type="carnivoro">
+          Zorro
+        </div>
+      </div>
+      <!-- Zonas de destino -->
+      <div class="draggable-container">
+        <div class="drop-zone" data-accept="productor" id="zone1">
+          Posición 1
+        </div>
+        <div class="drop-zone" data-accept="herbivoro" id="zone2">
+          Posición 2
+        </div>
+        <div class="drop-zone" data-accept="carnivoro" id="zone3">
+          Posición 3
+        </div>
+      </div>
+      <p class="message" id="message"></p>
+    </div>
+
+    <script>
+      const draggables = document.querySelectorAll(".draggable");
+      const dropZones = document.querySelectorAll(".drop-zone");
+      let draggedItem = null;
+
+      draggables.forEach((item) => {
+        item.addEventListener("dragstart", () => {
+          draggedItem = item;
+          setTimeout(() => {
+            item.style.display = "none";
+          }, 0);
+        });
+        item.addEventListener("dragend", () => {
+          item.style.display = "block";
+          draggedItem = null;
+        });
+      });
+
+      dropZones.forEach((zone) => {
+        zone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          zone.classList.add("over");
+        });
+        zone.addEventListener("dragleave", () => {
+          zone.classList.remove("over");
+        });
+        zone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          zone.classList.remove("over");
+          if (draggedItem) {
+            const acceptType = zone.getAttribute("data-accept");
+            const itemType = draggedItem.getAttribute("data-type");
+            if (acceptType === itemType) {
+              zone.textContent = draggedItem.textContent;
+              draggedItem.setAttribute("draggable", "false");
+              draggedItem.style.opacity = "0.5";
+              checkChain();
+            } else {
+              document.getElementById("message").textContent =
+                "¡Orden incorrecto! Inténtalo de nuevo.";
+              setTimeout(() => {
+                document.getElementById("message").textContent = "";
+              }, 2000);
+            }
+          }
+        });
+      });
+
+      function checkChain() {
+        const zone1 = document.getElementById("zone1").textContent.trim();
+        const zone2 = document.getElementById("zone2").textContent.trim();
+        const zone3 = document.getElementById("zone3").textContent.trim();
+        if (zone1 === "Planta" && zone2 === "Conejo" && zone3 === "Zorro") {
+          document.getElementById("message").textContent =
+            "¡Cadena alimenticia correcta!";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuerpo Humano Interactivo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #1e1e2f;
+      --secondary-color: #283044;
+      --accent-color: #e94560;
+      --text-light: #f5f5f5;
+      --bg-overlay: rgba(0, 0, 0, 0.8);
+      --modal-bg: #2a2a3d;
+      --transition-speed: 0.3s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, var(--primary-color), #2b2d42);
+      color: var(--text-light);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Navegación */
+    .main-nav {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .nav-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--secondary-color);
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      color: var(--text-light);
+      font-weight: 600;
+      transition: all var(--transition-speed) ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid transparent;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Encabezado principal */
+    .main-header {
+      text-align: center;
+      padding: 6rem 2rem 2rem;
+      animation: slideIn 1s ease;
+    }
+
+    .subtitle {
+      color: #a1a1a1;
+      max-width: 600px;
+      margin: 1rem auto;
+    }
+
+    /* Contenedor de contenido */
+    .content-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Tarjetas de anatomía */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .anatomy-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      transition: transform var(--transition-speed) ease;
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .anatomy-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header h2 {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .card-content {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .system-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: transparent;
+      transition: transform 0.5s ease;
+    }
+
+    /* Capa de información */
+    .info-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+
+    .anatomy-card:hover .info-overlay {
+      opacity: 1;
+    }
+
+    .info-btn {
+      background: var(--secondary-color);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 2rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .info-btn:hover {
+      background: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    /* Animaciones */
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Botón flotante para realizar el examen */
+    .floating-exam-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: var(--text-light);
+      border: none;
+      border-radius: 50px;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1100;
+    }
+
+    .floating-exam-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .floating-exam-btn span.btn-text {
+      font-weight: 600;
+      display: none;
+    }
+
+    @media (min-width: 600px) {
+      .floating-exam-btn span.btn-text {
+        display: inline;
+      }
+    }
+
+    /* Estilos para el Modal de Examen */
+    .exam-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-overlay);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+
+    .exam-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Ajustamos tamaño y scroll para mejor visualización */
+    .exam-modal .modal-content {
+      background: var(--modal-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      /* Aumentado para mayor ancho */
+      max-height: 90vh;
+      /* Permite que no se corte en pantallas pequeñas */
+      overflow-y: auto;
+      /* Scroll si hay muchas preguntas */
+      transform: translateY(-30px);
+      transition: transform var(--transition-speed) ease-out;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .exam-modal.show .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .modal-header h2 {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .close-modal {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-modal:hover {
+      color: var(--accent-color);
+    }
+
+    /* Más espacio en cada pregunta */
+    .exam-questions .question-card {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      /* Aumentado para mayor legibilidad */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      transition: background var(--transition-speed) ease;
+    }
+
+    .exam-questions .question-card:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background var(--transition-speed) ease;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .option input {
+      accent-color: var(--accent-color);
+    }
+
+    .custom-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--secondary-color);
+      border-radius: 50%;
+      display: inline-block;
+      position: relative;
+    }
+
+    .option input:checked+.custom-radio::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-color);
+      border-radius: 50%;
+    }
+
+    /* Botón de envío */
+    .submit-btn {
+      background: var(--accent-color);
+      color: var(--text-light);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      transform: scale(1.05);
+      background: #d53050;
+    }
+
+    /* Visualización de resultados */
+    .result-display {
+      margin-top: 1rem;
+      text-align: center;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+
+    .result-display.show-results {
+      opacity: 1;
+    }
+
+    .score-circle {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .results-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .result-item {
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .result-item.correct {
+      background: rgba(46, 204, 113, 0.2);
+    }
+
+    .result-item.incorrect {
+      background: rgba(231, 76, 60, 0.2);
+    }
+
+    /* Estilos para el Modal de Información */
+    .info-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-overlay);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1300;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+
+    .info-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .info-modal .modal-content {
+      background: var(--modal-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      /* Aumentado para ver mejor las imágenes */
+      max-height: 90vh;
+      /* Evita que se corte en pantallas pequeñas */
+      overflow-y: auto;
+      /* Scroll si el texto o imagen exceden la pantalla */
+      transform: translateY(-30px);
+      transition: transform var(--transition-speed) ease-out;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .info-modal.show .modal-content {
+      transform: translateY(0);
+    }
+
+    .info-modal .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .info-modal .modal-header h2 {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .close-info-modal {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-info-modal:hover {
+      color: var(--accent-color);
+    }
+
+    #info-modal-content p {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Para que las imágenes dentro del modal de información sean responsivas */
+    #info-modal-content img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Estilos para el Modal de Imagen */
+    .image-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-overlay);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1400;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+
+    .image-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .image-modal .modal-content {
+      background: var(--modal-bg);
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      border-radius: 10px;
+      overflow-y: auto;
+      /* Permite scroll vertical */
+      overflow-x: hidden;
+      /* Evita scroll horizontal innecesario */
+      transform: translateY(-30px);
+      transition: transform var(--transition-speed) ease-out;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+
+    .image-modal.show .modal-content {
+      transform: translateY(0);
+    }
+
+    .image-modal img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .close-image-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text-light);
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+    }
+
+    .close-image-modal:hover {
+      background: var(--accent-color);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="main-nav">
+    <button class="nav-btn" onclick="window.location.href='index.html'">
+      🌍 Planeta Tierra
+    </button>
+    <button class="nav-btn" onclick="window.location.href='humano.html'">
+      👤 Cuerpo Humano
+    </button>
+    <button class="nav-btn" onclick="window.location.href='animals.html'">
+      🐾Animales
+    </button>
+    <button class="nav-btn" onclick="window.location.href='document.html'">
+      📂Documentación
+    </button>
+    <button class="nav-btn" onclick="window.location.href='cadenaAlimenticia.html'">
+      ♻️Cadena Alimenticia
+    </button>
+    <button class="nav-btn" onclick="window.location.href='Biogeoquimicos.html'">
+      ☢️Biogeoquímicos
+    </button>
+    <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+      🐾Seres Vivos
+    </button>
+  </nav>
+
+  <header class="main-header">
+    <h1>Explorador Anatómico</h1>
+    <p class="subtitle">
+      Interactúa con los sistemas corporales y pon a prueba tus conocimientos
+    </p>
+  </header>
+
+  <main class="content-grid">
+    <section class="card-container">
+      <article class="anatomy-card" data-system="general">
+        <div class="card-header">
+          <h2>Cuerpo Humano</h2>
+          <div class="card-icon">🦴</div>
+        </div>
+        <div class="card-content">
+          <img src="assets/cuerp_human/cuerp_human.png" alt="Cuerpo completo" class="system-image" />
+          <div class="info-overlay">
+            <button class="info-btn" data-info="general">+ Info</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="anatomy-card" data-system="digestivo">
+        <div class="card-header">
+          <h2>Sistema Digestivo</h2>
+          <div class="card-icon">🍎</div>
+        </div>
+        <div class="card-content">
+          <img src="assets/cuerp_human/digestivo.png" alt="Sistema digestivo" class="system-image" />
+          <div class="info-overlay">
+            <button class="info-btn" data-info="digestivo">+ Info</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="anatomy-card" data-system="muscular">
+        <div class="card-header">
+          <h2>Sistema Muscular</h2>
+          <div class="card-icon">💪</div>
+        </div>
+        <div class="card-content">
+          <img src="assets/cuerp_human/muscular.png" alt="Sistema muscular" class="system-image" />
+          <div class="info-overlay">
+            <button class="info-btn" data-info="muscular">+ Info</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <button class="floating-exam-btn" id="exam-button">
+    <span>📝</span>
+    <span class="btn-text">Realizar Examen</span>
+  </button>
+
+  <!-- Modal de Examen -->
+  <div id="exam-modal" class="exam-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Evaluación de Conocimientos</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <form id="exam-form" class="exam-questions">
+        <!-- Las preguntas se cargarán dinámicamente -->
+      </form>
+      <div class="modal-footer">
+        <button type="submit" form="exam-form" class="submit-btn">
+          Enviar Respuestas
+        </button>
+        <div id="exam-result" class="result-display"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Información -->
+  <div id="info-modal" class="info-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="info-modal-title">Título de Información</h2>
+        <button class="close-info-modal">&times;</button>
+      </div>
+      <div id="info-modal-content">
+        <!-- Contenido dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const questions = [
+        {
+          question: "¿Qué parte del cuerpo humano protege el cerebro?",
+          options: ["Costilla", "Cráneo", "Pelvis"],
+          correct: 1,
+        },
+        {
+          question: "¿Cuál de estos órganos pertenece al sistema digestivo?",
+          options: ["Corazón", "Hígado", "Pulmón"],
+          correct: 1,
+        },
+        {
+          question: "¿Cuál sistema es responsable del movimiento del cuerpo?",
+          options: ["Digestivo", "Muscular", "Óseo"],
+          correct: 1,
+        },
+      ];
+      const cards = document.querySelectorAll(".anatomy-card");
+      const examModal = document.getElementById("exam-modal");
+      const examForm = document.getElementById("exam-form");
+      const examResult = document.getElementById("exam-result");
+      const examButton = document.getElementById("exam-button");
+
+      // Efecto zoom en imágenes al pasar el mouse
+      cards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          const image = card.querySelector(".system-image");
+          if (image) image.style.transform = "scale(1.1)";
+        });
+        card.addEventListener("mouseleave", () => {
+          const image = card.querySelector(".system-image");
+          if (image) image.style.transform = "scale(1)";
+        });
+      });
+
+      // Mostrar modal de información según el botón presionado
+      document.querySelectorAll(".info-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const system = e.target.dataset.info;
+          showSystemInfo(system);
+        });
+      });
+
+      // Abrir modal de examen
+      examButton.addEventListener("click", () => {
+        renderExamQuestions();
+        examModal.style.display = "flex";
+        setTimeout(() => examModal.classList.add("show"), 10);
+      });
+
+      document
+        .querySelector(".close-modal")
+        .addEventListener("click", closeExamModal);
+      examModal.addEventListener("click", (e) => {
+        if (e.target === examModal) closeExamModal();
+      });
+
+      // Renderiza dinámicamente las preguntas del examen
+      function renderExamQuestions() {
+        examForm.innerHTML = questions
+          .map(
+            (q, index) => `
+          <div class="question-card">
+            <h3>Pregunta ${index + 1}</h3>
+            <p>${q.question}</p>
+            <div class="options-grid">
+              ${q.options
+                .map(
+                  (opt, i) => `
+                <label class="option">
+                  <input type="radio" name="q${index}" value="${i}">
+                  <span class="custom-radio"></span>
+                  ${opt}
+                </label>
+              `
+                )
+                .join("")}
+            </div>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      // Manejo del envío del examen
+      examForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let score = 0;
+        const results = [];
+        questions.forEach((q, index) => {
+          const selected = document.querySelector(
+            `input[name="q${index}"]:checked`
+          );
+          if (selected && parseInt(selected.value) === q.correct) {
+            score++;
+            results.push({ question: index, correct: true });
+          } else {
+            results.push({ question: index, correct: false });
+          }
+        });
+        showExamResults(score, results);
+      });
+
+      function showExamResults(score, results) {
+        const resultHTML = `
+          <h3>Resultados del Examen</h3>
+          <div class="score-circle">${score}/${questions.length}</div>
+          <div class="results-breakdown">
+            ${results
+            .map(
+              (res, i) => `
+              <div class="result-item ${res.correct ? "correct" : "incorrect"}">
+                Pregunta ${i + 1}: ${res.correct ? "✅" : "❌"}
+              </div>
+            `
+            )
+            .join("")}
+          </div>
+        `;
+        examResult.innerHTML = resultHTML;
+        examResult.classList.add("show-results");
+      }
+
+      function closeExamModal() {
+        examModal.classList.remove("show");
+        setTimeout(() => {
+          examModal.style.display = "none";
+          examResult.classList.remove("show-results");
+          examForm.reset();
+        }, 300);
+      }
+
+      // Función para mostrar modal de información
+      function showSystemInfo(system) {
+        const infoModal = document.getElementById("info-modal");
+        const infoModalTitle = document.getElementById("info-modal-title");
+        const infoModalContent =
+          document.getElementById("info-modal-content");
+        let title = "",
+          content = "";
+        switch (system) {
+          case "digestivo":
+            title = "Sistema Digestivo";
+            content = `<p>El sistema digestivo se encarga de descomponer los alimentos y absorber nutrientes.</p>
+                       <ul>
+                         <li>Boca: Inicio de la digestión</li>
+                         <li>Estómago: Procesamiento de alimentos</li>
+                         <li>Intestinos: Absorción de nutrientes</li>
+                       </ul>`;
+            break;
+          case "muscular":
+            title = "Sistema Muscular";
+            content = `<p>El sistema muscular está formado por músculos esqueléticos, lisos y cardíacos, esenciales para el movimiento.</p>
+                       <ul>
+                         <li>Músculos Esqueléticos: Movimientos voluntarios</li>
+                         <li>Músculos Liso: Funciones internas automáticas</li>
+                         <li>Músculo Cardíaco: Bombea sangre</li>
+                       </ul>`;
+            break;
+          case "general":
+            title = "Cuerpo Humano";
+            content = `<p>El cuerpo humano es una estructura compleja compuesta por múltiples sistemas que trabajan en conjunto para mantener la vida.</p>`;
+            break;
+          default:
+            title = "Información";
+            content = `<p>No hay información disponible para este sistema.</p>`;
+        }
+        infoModalTitle.textContent = title;
+        infoModalContent.innerHTML = content;
+        infoModal.style.display = "flex";
+        setTimeout(() => infoModal.classList.add("show"), 10);
+      }
+
+      function closeInfoModal() {
+        const infoModal = document.getElementById("info-modal");
+        infoModal.classList.remove("show");
+        setTimeout(() => {
+          infoModal.style.display = "none";
+        }, 300);
+      }
+
+      // Abrir modal de imagen al hacer clic en la carta (excluyendo el botón "+ Info")
+      cards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          // Si el clic proviene de un elemento dentro del botón de información, se ignora
+          if (e.target.closest(".info-btn")) return;
+          const image = card.querySelector(".system-image");
+          if (image) {
+            openImageModal(image.src);
+          }
+        });
+      });
+
+      function openImageModal(src) {
+        const imageModal = document.getElementById("image-modal");
+        const enlargedImage = document.getElementById("enlarged-image");
+        enlargedImage.src = src;
+        imageModal.style.display = "flex";
+        setTimeout(() => imageModal.classList.add("show"), 10);
+      }
+
+      function closeImageModal() {
+        const imageModal = document.getElementById("image-modal");
+        imageModal.classList.remove("show");
+        setTimeout(() => {
+          imageModal.style.display = "none";
+        }, 300);
+      }
+
+      // Cerrar modal de imagen con el botón de cierre
+      document
+        .querySelector(".close-image-modal")
+        .addEventListener("click", closeImageModal);
+      // Cerrar modal de imagen al hacer clic fuera de la imagen
+      document
+        .getElementById("image-modal")
+        .addEventListener("click", (e) => {
+          if (e.target === document.getElementById("image-modal")) {
+            closeImageModal();
+          }
+        });
+
+      document
+        .querySelector(".close-info-modal")
+        .addEventListener("click", closeInfoModal);
+      document.addEventListener("click", (e) => {
+        const infoModal = document.getElementById("info-modal");
+        if (e.target === infoModal) closeInfoModal();
+      });
+    });
+
+    window.addEventListener("scroll", () => {
+      const scrolled = window.pageYOffset;
+      const mainHeader = document.querySelector(".main-header");
+      if (mainHeader) {
+        mainHeader.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+    });
+  </script>
+  <!-- Modal de Imagen -->
+  <div id="image-modal" class="image-modal">
+    <div class="modal-content image-modal-content">
+      <button class="close-image-modal">&times;</button>
+      <img id="enlarged-image" src="" alt="Imagen ampliada" />
+    </div>
+  </div>
+</body>
+
+</html>

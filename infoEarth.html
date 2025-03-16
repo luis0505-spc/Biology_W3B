@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Información de la Región</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Estilos adicionales para infoEarth.html */
+    body {
+      background: linear-gradient(135deg, var(--primary-color), #2b2d42);
+      color: var(--text-light);
+      padding-top: 90px;
+      /* Espacio para la barra de navegación */
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.98);
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    .content h1 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .section h2 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .section p {
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    /* Galería de miniaturas */
+    .gallery {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .thumbnail {
+      width: 100px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .thumbnail.overlay {
+      position: relative;
+    }
+
+    .thumbnail.overlay .overlay-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: var(--accent-color);
+      color: var(--text-light);
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+      background: var(--secondary-color);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Estilos del Modal de Galería */
+    .gallery-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .gallery-modal.hidden {
+      display: none;
+    }
+
+    .gallery-modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .gallery-modal-content img {
+      max-width: 90vw;
+      /* No excede el 90% del ancho de la ventana */
+      max-height: 90vh;
+      /* No excede el 90% de la altura de la ventana */
+      width: auto;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .gallery-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .gallery-modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #gallery-modal-prev {
+      left: 10px;
+    }
+
+    #gallery-modal-next {
+      right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="main-nav">
+    <button class="nav-btn" onclick="window.location.href='index.html'">
+      🌍 Planeta Tierra
+    </button>
+    <button class="nav-btn" onclick="window.location.href='humano.html'">
+      👤 Cuerpo Humano
+    </button>
+    <button class="nav-btn" onclick="window.location.href='animals.html'">
+      🐾Animales
+    </button>
+    <button class="nav-btn" onclick="window.location.href='document.html'">
+      📂Documentación
+    </button>
+    <button class="nav-btn" onclick="window.location.href='cadenaAlimenticia.html'">
+      ♻️Cadena Alimenticia
+    </button>
+    <button class="nav-btn" onclick="window.location.href='Biogeoquimicos.html'">
+      ☢️Biogeoquímicos
+    </button>
+    <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+      🐾Seres Vivos
+    </button>
+  </nav>
+
+  <div class="content">
+    <h1 id="region-title">Información de la Región</h1>
+    <div id="region-content">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+    <a href="index.html" class="back-btn">Volver al Mapa</a>
+  </div>
+
+  <!-- Modal de Galería -->
+  <div id="gallery-modal" class="gallery-modal hidden">
+    <div class="gallery-modal-content">
+      <span id="gallery-modal-close" class="gallery-modal-close">&times;</span>
+      <img id="gallery-modal-image" src="" alt="" />
+      <button id="gallery-modal-prev" class="gallery-modal-nav">
+        Anterior
+      </button>
+      <button id="gallery-modal-next" class="gallery-modal-nav">
+        Siguiente
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Datos de las regiones naturales (en este ejemplo se muestra la Región Andina; añade o modifica las demás según necesites)
+    const regiones = {
+      andina: {
+        nombre: "Región Andina",
+        ecosistemas: {
+          texto:
+            "La región andina es muy diversa debido a los cambios de altitud. En lo más alto se encuentra el páramo, un lugar frío y húmedo donde crecen plantas especiales como los frailejones y que regula el agua. Más abajo se encuentran los bosques nubosos y de bosque seco, así como zonas de transición que combinan características de ambos. Estos ecosistemas son esenciales para el equilibrio ambiental y la biodiversidad.",
+          images: [
+            "assets/ecosystems/ParamoAndino.jpg",
+            "assets/ecosystems/BosqueNubosoAndino.webp",
+            "assets/ecosystems/bosqueSecoAndino.jpg",
+          ],
+        },
+        fauna: {
+          texto:
+            "La fauna andina se caracteriza por una gran diversidad de especies adaptadas a la altitud. Destacan animales emblemáticos como el cóndor andino, el venado de cola blanca y pequeños roedores que han desarrollado adaptaciones únicas para vivir en ambientes fríos y con poca oxigenación.",
+          images: [
+            "assets/fauna/guacamaya.jpg",
+            "assets/fauna/pava.jpg",
+            "assets/fauna/perdiz.jpg",
+            "assets/fauna/pajaroCantor.jpg",
+          ],
+        },
+        flora: {
+          texto:
+            "La flora en la región andina es muy rica y variada. Se pueden encontrar bosques nubosos llenos de epífitas, frailejones característicos de los páramos, y numerosas especies endémicas que se adaptan a los extremos de temperatura y humedad. Esta diversidad vegetal es esencial para la regulación hídrica y el equilibrio ecológico.",
+          images: [
+            "assets/flora/laurel.jpg",
+            "assets/flora/robles.jpg",
+            "assets/flora/gaque.jpg",
+            "assets/flora/cedro.jpg",
+          ],
+        },
+        ciudades: {
+          texto:
+            "Las ciudades ubicadas en la región andina, como Bogotá, Medellín y Cali, combinan modernidad y tradición. Estas urbes cuentan con un rico patrimonio cultural, arquitectura colonial y una vibrante vida urbana, lo que refleja la fusión entre el progreso y las raíces históricas de la región.",
+          images: [
+            "assets/ciudades/bogota.jpg",
+            "assets/ciudades/bucaramanga.jpg",
+            "assets/ciudades/cucuta.jpg",
+            "assets/ciudades/sangil.jpg",
+            "assets/ciudades/neiva.jpg",
+          ],
+        },
+        datos: {
+          texto:
+            "La región andina es un mosaico de paisajes y culturas. Además de su biodiversidad, se destaca por ser el 'almacén' de agua a través de sus páramos, albergar leyendas ancestrales y sitios arqueológicos, y ofrecer microclimas muy variados que han influido en el desarrollo cultural y agrícola de sus habitantes",
+        },
+      },
+      // Agrega aquí los datos de otras regiones (caribe, pacífica, amazónica, orinoquía) de forma similar.
+      caribe: {
+        nombre: "Región Caribe",
+        ecosistemas: {
+          texto:
+            "La región andina es muy diversa debido a los cambios de altitud. En lo más alto se encuentra el páramo, un lugar frío y húmedo donde crecen plantas especiales como los frailejones y que regula el agua. Más abajo se encuentran los bosques nubosos y de bosque seco, así como zonas de transición que combinan características de ambos. Estos ecosistemas son esenciales para el equilibrio ambiental y la biodiversidad.",
+          images: [
+            "assets/ecosystems/ParamoAndino.jpg",
+            "assets/ecosystems/BosqueNubosoAndino.webp",
+            "assets/ecosystems/bosqueSecoAndino.jpg",
+          ],
+        },
+        fauna: {
+          texto:
+            "La fauna andina se caracteriza por una gran diversidad de especies adaptadas a la altitud. Destacan animales emblemáticos como el cóndor andino, el venado de cola blanca y pequeños roedores que han desarrollado adaptaciones únicas para vivir en ambientes fríos y con poca oxigenación.",
+          images: [
+            "assets/fauna/guacamaya.jpg",
+            "assets/fauna/pava.jpg",
+            "assets/fauna/perdiz.jpg",
+            "assets/fauna/pajaroCantor.jpg",
+          ],
+        },
+        flora: {
+          texto:
+            "La flora en la región andina es muy rica y variada. Se pueden encontrar bosques nubosos llenos de epífitas, frailejones característicos de los páramos, y numerosas especies endémicas que se adaptan a los extremos de temperatura y humedad. Esta diversidad vegetal es esencial para la regulación hídrica y el equilibrio ecológico.",
+          images: [
+            "assets/flora/laurel.jpg",
+            "assets/flora/robles.jpg",
+            "assets/flora/gaque.jpg",
+            "assets/flora/cedro.jpg",
+          ],
+        },
+        ciudades: {
+          texto:
+            "Las ciudades ubicadas en la región andina, como Bogotá, Medellín y Cali, combinan modernidad y tradición. Estas urbes cuentan con un rico patrimonio cultural, arquitectura colonial y una vibrante vida urbana, lo que refleja la fusión entre el progreso y las raíces históricas de la región.",
+          images: [
+            "assets/ciudades/bogota.jpg",
+            "assets/ciudades/bucaramanga.jpg",
+            "assets/ciudades/cucuta.jpg",
+            "assets/ciudades/sangil.jpg",
+            "assets/ciudades/neiva.jpg",
+          ],
+        },
+        datos: {
+          texto:
+            "La región andina es un mosaico de paisajes y culturas. Además de su biodiversidad, se destaca por ser el 'almacén' de agua a través de sus páramos, albergar leyendas ancestrales y sitios arqueológicos, y ofrecer microclimas muy variados que han influido en el desarrollo cultural y agrícola de sus habitantes",
+        },
+      },
+
+      pacífica: {
+        nombre: "Región Pacífica",
+        ecosistemas: {
+          texto:
+            "La región andina es muy diversa debido a los cambios de altitud. En lo más alto se encuentra el páramo, un lugar frío y húmedo donde crecen plantas especiales como los frailejones y que regula el agua. Más abajo se encuentran los bosques nubosos y de bosque seco, así como zonas de transición que combinan características de ambos. Estos ecosistemas son esenciales para el equilibrio ambiental y la biodiversidad.",
+          images: [
+            "assets/ecosystems/ParamoAndino.jpg",
+            "assets/ecosystems/BosqueNubosoAndino.webp",
+            "assets/ecosystems/bosqueSecoAndino.jpg",
+          ],
+        },
+        fauna: {
+          texto:
+            "La fauna andina se caracteriza por una gran diversidad de especies adaptadas a la altitud. Destacan animales emblemáticos como el cóndor andino, el venado de cola blanca y pequeños roedores que han desarrollado adaptaciones únicas para vivir en ambientes fríos y con poca oxigenación.",
+          images: [
+            "assets/fauna/guacamaya.jpg",
+            "assets/fauna/pava.jpg",
+            "assets/fauna/perdiz.jpg",
+            "assets/fauna/pajaroCantor.jpg",
+          ],
+        },
+        flora: {
+          texto:
+            "La flora en la región andina es muy rica y variada. Se pueden encontrar bosques nubosos llenos de epífitas, frailejones característicos de los páramos, y numerosas especies endémicas que se adaptan a los extremos de temperatura y humedad. Esta diversidad vegetal es esencial para la regulación hídrica y el equilibrio ecológico.",
+          images: [
+            "assets/flora/laurel.jpg",
+            "assets/flora/robles.jpg",
+            "assets/flora/gaque.jpg",
+            "assets/flora/cedro.jpg",
+          ],
+        },
+        ciudades: {
+          texto:
+            "Las ciudades ubicadas en la región andina, como Bogotá, Medellín y Cali, combinan modernidad y tradición. Estas urbes cuentan con un rico patrimonio cultural, arquitectura colonial y una vibrante vida urbana, lo que refleja la fusión entre el progreso y las raíces históricas de la región.",
+          images: [
+            "assets/ciudades/bogota.jpg",
+            "assets/ciudades/bucaramanga.jpg",
+            "assets/ciudades/cucuta.jpg",
+            "assets/ciudades/sangil.jpg",
+            "assets/ciudades/neiva.jpg",
+          ],
+        },
+        datos: {
+          texto:
+            "La región andina es un mosaico de paisajes y culturas. Además de su biodiversidad, se destaca por ser el 'almacén' de agua a través de sus páramos, albergar leyendas ancestrales y sitios arqueológicos, y ofrecer microclimas muy variados que han influido en el desarrollo cultural y agrícola de sus habitantes",
+        },
+      },
+
+      orinoquía: {
+        nombre: "Región Orinoquía",
+        ecosistemas: {
+          texto:
+            "La región andina es muy diversa debido a los cambios de altitud. En lo más alto se encuentra el páramo, un lugar frío y húmedo donde crecen plantas especiales como los frailejones y que regula el agua. Más abajo se encuentran los bosques nubosos y de bosque seco, así como zonas de transición que combinan características de ambos. Estos ecosistemas son esenciales para el equilibrio ambiental y la biodiversidad.",
+          images: [
+            "assets/ecosystems/ParamoAndino.jpg",
+            "assets/ecosystems/BosqueNubosoAndino.webp",
+            "assets/ecosystems/bosqueSecoAndino.jpg",
+          ],
+        },
+        fauna: {
+          texto:
+            "La fauna andina se caracteriza por una gran diversidad de especies adaptadas a la altitud. Destacan animales emblemáticos como el cóndor andino, el venado de cola blanca y pequeños roedores que han desarrollado adaptaciones únicas para vivir en ambientes fríos y con poca oxigenación.",
+          images: [
+            "assets/fauna/guacamaya.jpg",
+            "assets/fauna/pava.jpg",
+            "assets/fauna/perdiz.jpg",
+            "assets/fauna/pajaroCantor.jpg",
+          ],
+        },
+        flora: {
+          texto:
+            "La flora en la región andina es muy rica y variada. Se pueden encontrar bosques nubosos llenos de epífitas, frailejones característicos de los páramos, y numerosas especies endémicas que se adaptan a los extremos de temperatura y humedad. Esta diversidad vegetal es esencial para la regulación hídrica y el equilibrio ecológico.",
+          images: [
+            "assets/flora/laurel.jpg",
+            "assets/flora/robles.jpg",
+            "assets/flora/gaque.jpg",
+            "assets/flora/cedro.jpg",
+          ],
+        },
+        ciudades: {
+          texto:
+            "Las ciudades ubicadas en la región andina, como Bogotá, Medellín y Cali, combinan modernidad y tradición. Estas urbes cuentan con un rico patrimonio cultural, arquitectura colonial y una vibrante vida urbana, lo que refleja la fusión entre el progreso y las raíces históricas de la región.",
+          images: [
+            "assets/ciudades/bogota.jpg",
+            "assets/ciudades/bucaramanga.jpg",
+            "assets/ciudades/cucuta.jpg",
+            "assets/ciudades/sangil.jpg",
+            "assets/ciudades/neiva.jpg",
+          ],
+        },
+        datos: {
+          texto:
+            "La región andina es un mosaico de paisajes y culturas. Además de su biodiversidad, se destaca por ser el 'almacén' de agua a través de sus páramos, albergar leyendas ancestrales y sitios arqueológicos, y ofrecer microclimas muy variados que han influido en el desarrollo cultural y agrícola de sus habitantes",
+        },
+      },
+      amazónica: {
+        nombre: "Región Amazónica",
+        ecosistemas: {
+          texto:
+            "La región andina es muy diversa debido a los cambios de altitud. En lo más alto se encuentra el páramo, un lugar frío y húmedo donde crecen plantas especiales como los frailejones y que regula el agua. Más abajo se encuentran los bosques nubosos y de bosque seco, así como zonas de transición que combinan características de ambos. Estos ecosistemas son esenciales para el equilibrio ambiental y la biodiversidad.",
+          images: [
+            "assets/ecosystems/ParamoAndino.jpg",
+            "assets/ecosystems/BosqueNubosoAndino.webp",
+            "assets/ecosystems/bosqueSecoAndino.jpg",
+          ],
+        },
+        fauna: {
+          texto:
+            "La fauna andina se caracteriza por una gran diversidad de especies adaptadas a la altitud. Destacan animales emblemáticos como el cóndor andino, el venado de cola blanca y pequeños roedores que han desarrollado adaptaciones únicas para vivir en ambientes fríos y con poca oxigenación.",
+          images: [
+            "assets/fauna/guacamaya.jpg",
+            "assets/fauna/pava.jpg",
+            "assets/fauna/perdiz.jpg",
+            "assets/fauna/pajaroCantor.jpg",
+          ],
+        },
+        flora: {
+          texto:
+            "La flora en la región andina es muy rica y variada. Se pueden encontrar bosques nubosos llenos de epífitas, frailejones característicos de los páramos, y numerosas especies endémicas que se adaptan a los extremos de temperatura y humedad. Esta diversidad vegetal es esencial para la regulación hídrica y el equilibrio ecológico.",
+          images: [
+            "assets/flora/laurel.jpg",
+            "assets/flora/robles.jpg",
+            "assets/flora/gaque.jpg",
+            "assets/flora/cedro.jpg",
+          ],
+        },
+        ciudades: {
+          texto:
+            "Las ciudades ubicadas en la región andina, como Bogotá, Medellín y Cali, combinan modernidad y tradición. Estas urbes cuentan con un rico patrimonio cultural, arquitectura colonial y una vibrante vida urbana, lo que refleja la fusión entre el progreso y las raíces históricas de la región.",
+          images: [
+            "assets/ciudades/bogota.jpg",
+            "assets/ciudades/bucaramanga.jpg",
+            "assets/ciudades/cucuta.jpg",
+            "assets/ciudades/sangil.jpg",
+            "assets/ciudades/neiva.jpg",
+          ],
+        },
+        datos: {
+          texto:
+            "La región andina es un mosaico de paisajes y culturas. Además de su biodiversidad, se destaca por ser el 'almacén' de agua a través de sus páramos, albergar leyendas ancestrales y sitios arqueológicos, y ofrecer microclimas muy variados que han influido en el desarrollo cultural y agrícola de sus habitantes",
+        },
+      },
+    };
+
+    // Función para obtener el parámetro "region" de la URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Función que genera el HTML de la galería de miniaturas
+    function generateGalleryHTML(images, category) {
+      if (!images || images.length === 0) return "";
+      let html = '<div class="gallery" data-category="' + category + '">';
+      if (images.length <= 2) {
+        images.forEach(function (img) {
+          html += '<img src="' + img + '" class="thumbnail" />';
+        });
+      } else {
+        // Mostrar las dos primeras miniaturas y un recuadro con la cuenta extra
+        html += '<img src="' + images[0] + '" class="thumbnail" />';
+        html += '<img src="' + images[1] + '" class="thumbnail" />';
+        const extraCount = images.length - 2;
+        html += '<div class="thumbnail overlay">';
+        html += '<img src="' + images[2] + '" class="thumbnail" />';
+        html += '<div class="overlay-text">+' + extraCount + "</div>";
+        html += "</div>";
+      }
+      html += "</div>";
+      return html;
+    }
+
+    // Leer la región seleccionada (por ejemplo: ?region=andina)
+    const regionKey = getQueryParam("region")
+      ? getQueryParam("region").toLowerCase()
+      : null;
+    const regionData =
+      regionKey && regiones[regionKey] ? regiones[regionKey] : null;
+
+    // Referencias a elementos del DOM
+    const regionTitleEl = document.getElementById("region-title");
+    const regionContentEl = document.getElementById("region-content");
+
+    if (regionData) {
+      regionTitleEl.textContent = regionData.nombre;
+      regionContentEl.innerHTML = `
+          <section class="section">
+            <h2>Ecosistemas</h2>
+            <p>${regionData.ecosistemas.texto}</p>
+            ${generateGalleryHTML(regionData.ecosistemas.images, "ecosistemas")}
+          </section>
+          <section class="section">
+            <h2>Fauna</h2>
+            <p>${regionData.fauna.texto}</p>
+            ${generateGalleryHTML(regionData.fauna.images, "fauna")}
+          </section>
+          <section class="section">
+            <h2>Flora</h2>
+            <p>${regionData.flora.texto}</p>
+            ${generateGalleryHTML(regionData.flora.images, "flora")}
+          </section>
+          <section class="section">
+            <h2>Ciudades</h2>
+            <p>${regionData.ciudades.texto}</p>
+            ${generateGalleryHTML(regionData.ciudades.images, "ciudades")}
+          </section>
+          <section class="section">
+            <h2>Datos Curiosos</h2>
+            <p>${regionData.datos.texto}</p>
+            ${generateGalleryHTML(regionData.datos.images, "datos")}
+          </section>
+        `;
+    } else {
+      regionTitleEl.textContent = "Región no encontrada";
+      regionContentEl.innerHTML =
+        "<p>No se encontraron datos para la región seleccionada.</p>";
+    }
+
+    // Variables para el modal de la galería
+    let currentGalleryImages = [];
+    let currentGalleryIndex = 0;
+
+    // Función para abrir la galería (modal) de una categoría
+    function openGallery(category) {
+      // Obtenemos el array de imágenes de la categoría
+      const catImages = regionData[category].images;
+      currentGalleryImages = catImages;
+      currentGalleryIndex = 0;
+      showModalImage();
+      document.getElementById("gallery-modal").classList.remove("hidden");
+    }
+
+    // Función para actualizar la imagen mostrada en el modal
+    function showModalImage() {
+      const modalImage = document.getElementById("gallery-modal-image");
+      modalImage.src = currentGalleryImages[currentGalleryIndex];
+    }
+
+    // Asignar evento a cada contenedor de galería para abrir el modal
+    document.querySelectorAll(".gallery").forEach(function (galleryElem) {
+      galleryElem.addEventListener("click", function () {
+        const category = this.getAttribute("data-category");
+        openGallery(category);
+      });
+    });
+
+    // Eventos para navegación del modal
+    document
+      .getElementById("gallery-modal-next")
+      .addEventListener("click", function (e) {
+        e.stopPropagation();
+        currentGalleryIndex =
+          (currentGalleryIndex + 1) % currentGalleryImages.length;
+        showModalImage();
+      });
+    document
+      .getElementById("gallery-modal-prev")
+      .addEventListener("click", function (e) {
+        e.stopPropagation();
+        currentGalleryIndex =
+          (currentGalleryIndex - 1 + currentGalleryImages.length) %
+          currentGalleryImages.length;
+        showModalImage();
+      });
+    document
+      .getElementById("gallery-modal-close")
+      .addEventListener("click", function () {
+        document.getElementById("gallery-modal").classList.add("hidden");
+      });
+    // Cerrar modal al hacer clic fuera del contenido
+    document
+      .getElementById("gallery-modal")
+      .addEventListener("click", function (e) {
+        if (e.target === this) {
+          document.getElementById("gallery-modal").classList.add("hidden");
+        }
+      });
+  </script>
+</body>
+
+</html>

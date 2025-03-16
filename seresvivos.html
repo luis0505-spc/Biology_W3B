@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clasificación de Seres Vivos: Actividades Interactivas</title>
+    <style>
+      :root {
+        --primary-color: #1e1e2f;
+        --secondary-color: #283044;
+        --accent-color: #e94560;
+        --text-light: #f5f5f5;
+        --background-color: #f4f4f4;
+        --font-family: "Poppins", sans-serif;
+        --transition-speed: 0.3s;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-family);
+        background: var(--background-color);
+        color: #333;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      header {
+        background: var(--primary-color);
+        color: var(--text-light);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      header h1 {
+        margin-bottom: 0.5rem;
+      }
+      .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        z-index: 1000;
+      }
+      .nav-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--secondary-color);
+        border: none;
+        border-radius: 2rem;
+        cursor: pointer;
+        color: var(--text-light);
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+      }
+      .nav-btn:hover {
+        background: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .container {
+        max-width: 800px;
+        margin: 6rem auto 2rem;
+        padding: 0 1rem;
+        text-align: center;
+      }
+      h2 {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+      p.instructions {
+        margin-bottom: 2rem;
+      }
+      .activity-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 2rem;
+      }
+      .drop-zone {
+        border: 2px dashed var(--secondary-color);
+        padding: 1rem;
+        border-radius: 5px;
+        width: 150px;
+        min-height: 50px;
+        text-align: center;
+      }
+      .draggable {
+        padding: 1rem;
+        background: var(--secondary-color);
+        color: var(--text-light);
+        border-radius: 5px;
+        cursor: grab;
+        user-select: none;
+        margin: 0.5rem auto;
+        width: 150px;
+        text-align: center;
+      }
+      .message {
+        font-weight: bold;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <br>
+      <br>
+      <br>
+      <h1>Clasificación de Seres Vivos</h1>
+    </header>
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        🌍 Planeta Tierra
+      </button>
+      <button class="nav-btn" onclick="window.location.href='humano.html'">
+        👤 Cuerpo Humano
+      </button>
+      <button class="nav-btn" onclick="window.location.href='animals.html'">
+        🐾Animales
+      </button>
+      <button class="nav-btn" onclick="window.location.href='document.html'">
+        📂Documentación
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='cadenaAlimenticia.html'"
+      >
+        ♻️Cadena Alimenticia
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='Biogeoquimicos.html'"
+      >
+        ☢️Biogeoquímicos
+      </button>
+      <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+        🐾Seres Vivos
+      </button>
+    </nav>
+    <div class="container">
+      <h2>Actividad Interactiva: Taxonomía y Biodiversidad</h2>
+      <p class="instructions">
+        Arrastra cada organismo a su categoría correcta.
+      </p>
+      <div class="activity-container">
+        <div class="drop-zone" data-category="mamiferos" id="mamiferos-zone">
+          Mamíferos
+        </div>
+        <div class="drop-zone" data-category="aves" id="aves-zone">Aves</div>
+        <div class="drop-zone" data-category="reptiles" id="reptiles-zone">
+          Reptiles
+        </div>
+      </div>
+      <div
+        class="draggable"
+        draggable="true"
+        data-category="mamiferos"
+        id="elefante"
+      >
+        Elefante
+      </div>
+      <div class="draggable" draggable="true" data-category="aves" id="aguila">
+        Águila
+      </div>
+      <div
+        class="draggable"
+        draggable="true"
+        data-category="reptiles"
+        id="cocodrilo"
+      >
+        Cocodrilo
+      </div>
+      <p class="message" id="message"></p>
+    </div>
+    <script>
+      const draggables = document.querySelectorAll(".draggable");
+      const dropZones = document.querySelectorAll(".drop-zone");
+      let draggedElement = null;
+
+      draggables.forEach((item) => {
+        item.addEventListener("dragstart", () => {
+          draggedElement = item;
+          setTimeout(() => {
+            item.style.display = "none";
+          }, 0);
+        });
+        item.addEventListener("dragend", () => {
+          item.style.display = "block";
+          draggedElement = null;
+        });
+      });
+
+      dropZones.forEach((zone) => {
+        zone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          zone.style.background = "#ddd";
+        });
+        zone.addEventListener("dragleave", () => {
+          zone.style.background = "";
+        });
+        zone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          zone.style.background = "";
+          if (draggedElement) {
+            const zoneCategory = zone.getAttribute("data-category");
+            const itemCategory = draggedElement.getAttribute("data-category");
+            if (zoneCategory === itemCategory) {
+              zone.textContent = draggedElement.textContent;
+              draggedElement.setAttribute("draggable", "false");
+              checkActivity();
+            } else {
+              document.getElementById("message").textContent =
+                "¡Categoría incorrecta! Inténtalo de nuevo.";
+              setTimeout(() => {
+                document.getElementById("message").textContent = "";
+              }, 2000);
+            }
+          }
+        });
+      });
+
+      function checkActivity() {
+        const mamZone = document
+          .getElementById("mamiferos-zone")
+          .textContent.trim();
+        const avesZone = document
+          .getElementById("aves-zone")
+          .textContent.trim();
+        const repZone = document
+          .getElementById("reptiles-zone")
+          .textContent.trim();
+        if (
+          mamZone === "Elefante" &&
+          avesZone === "Águila" &&
+          repZone === "Cocodrilo"
+        ) {
+          document.getElementById("message").textContent =
+            "¡Actividad completada correctamente!";
+        }
+      }
+    </script>
+  </body>
+</html>

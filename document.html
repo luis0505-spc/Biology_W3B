@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentación en Biología - 6º Grado</title>
+    <style>
+      /* VARIABLES Y RESET */
+      :root {
+        --primary-color: #1e1e2f;
+        --secondary-color: #283044;
+        --accent-color: #e94560;
+        --text-light: #f5f5f5;
+        --background-color: #f4f4f4;
+        --font-family: "Poppins", sans-serif;
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ESTILOS GLOBALES */
+      body {
+        font-family: var(--font-family);
+        background: var(--background-color);
+        color: #333;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* ANIMACIONES */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* CABECERA */
+      header {
+        background: var(--primary-color);
+        color: var(--text-light);
+        padding: 1.5rem;
+        text-align: center;
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      header h1 {
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      header p {
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      /* BARRA DE NAVEGACIÓN - FLOTANTE */
+      .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      .nav-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--secondary-color);
+        border: none;
+        border-radius: 2rem;
+        cursor: pointer;
+        color: var(--text-light);
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid transparent;
+      }
+      .nav-btn:hover {
+        background: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* CONTENEDOR PRINCIPAL */
+      .container {
+        max-width: 800px;
+        margin: 6rem auto 2rem; /* margen superior para dejar espacio a la nav */
+        padding: 0 1rem;
+      }
+
+      /* SECCIONES DE CONTENIDO */
+      section {
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      section:nth-child(odd) {
+        animation-delay: 0.2s;
+      }
+      section:nth-child(even) {
+        animation-delay: 0.4s;
+      }
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      p {
+        margin-bottom: 1rem;
+        text-align: justify;
+      }
+      ul {
+        list-style: disc;
+        margin-left: 1.5rem;
+      }
+
+      /* INFO-BOXES */
+      .info-box {
+        background: var(--secondary-color);
+        color: var(--text-light);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      .info-box h3 {
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      /* PIE DE PÁGINA */
+      footer {
+        text-align: center;
+        padding: 1rem;
+        background: var(--primary-color);
+        color: var(--text-light);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- CABECERA -->
+    <header>
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1>Documentación en Biología</h1>
+      <p>Material de estudio para estudiantes de 6º grado</p>
+    </header>
+
+    <!-- BARRA DE NAVEGACIÓN FLOTANTE -->
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        🌍 Planeta Tierra
+      </button>
+      <button class="nav-btn" onclick="window.location.href='humano.html'">
+        👤 Cuerpo Humano
+      </button>
+      <button class="nav-btn" onclick="window.location.href='animals.html'">
+        🐾Animales
+      </button>
+      <button class="nav-btn" onclick="window.location.href='document.html'">
+        📂Documentación
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='cadenaAlimenticia.html'"
+      >
+        ♻️Cadena Alimenticia
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='Biogeoquimicos.html'"
+      >
+        ☢️Biogeoquímicos
+      </button>
+      <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+        🐾Seres Vivos
+      </button>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+      <!-- Sección 1: Introducción -->
+      <section>
+        <h2>Introducción a la Biología</h2>
+        <p>
+          La biología es la ciencia que estudia a los seres vivos, su
+          estructura, función, crecimiento y evolución. En este documento,
+          aprenderás los conceptos básicos sobre cómo se clasifican los seres
+          vivos, la importancia de la biodiversidad y la cadena alimentaria.
+        </p>
+      </section>
+
+      <!-- Sección 2: Clasificación de los Seres Vivos -->
+      <section>
+        <h2>Clasificación de los Seres Vivos</h2>
+        <p>
+          Para entender mejor el mundo natural, los científicos agrupan a los
+          seres vivos en diferentes categorías basadas en sus características.
+          Los niveles de clasificación incluyen:
+        </p>
+        <ul>
+          <li>
+            <strong>Reinos:</strong> Por ejemplo, animales, plantas, hongos,
+            protistas y bacterias.
+          </li>
+          <li>
+            <strong>Filos y Clases:</strong> Subgrupos que agrupan organismos
+            con características similares.
+          </li>
+          <li>
+            <strong>Órdenes, Familias, Géneros y Especies:</strong> Niveles más
+            específicos que ayudan a identificar a cada ser vivo.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Sección 3: El Reino Animal -->
+      <section>
+        <h2>El Reino Animal</h2>
+        <p>
+          El reino animal es uno de los grupos más variados de seres vivos y se
+          caracteriza por incluir organismos multicelulares que se alimentan de
+          otros seres vivos. A continuación, se destacan tres grupos
+          principales:
+        </p>
+        <div class="info-box">
+          <h3>Mamíferos</h3>
+          <p>
+            Animales que tienen pelo y producen leche para alimentar a sus
+            crías, como el león, el elefante y el delfín.
+          </p>
+        </div>
+        <div class="info-box">
+          <h3>Aves</h3>
+          <p>
+            Animales con plumas y, en su mayoría, capaces de volar. Ejemplos son
+            el águila y el loro.
+          </p>
+        </div>
+        <div class="info-box">
+          <h3>Reptiles</h3>
+          <p>
+            Animales de sangre fría, con piel escamosa, como la serpiente y el
+            cocodrilo.
+          </p>
+        </div>
+      </section>
+
+      <!-- Sección 4: La Cadena Alimentaria -->
+      <section>
+        <h2>La Cadena Alimentaria</h2>
+        <p>
+          La cadena alimentaria muestra cómo la energía se transfiere de un
+          organismo a otro. Se divide en tres niveles:
+        </p>
+        <ul>
+          <li>
+            <strong>Productores:</strong> Plantas y otros organismos que
+            producen su propio alimento mediante la fotosíntesis.
+          </li>
+          <li>
+            <strong>Consumidores:</strong> Animales que se alimentan de otros
+            seres vivos. Se dividen en consumidores primarios (herbívoros) y
+            secundarios (carnívoros).
+          </li>
+          <li>
+            <strong>Descomponedores:</strong> Organismos como hongos y bacterias
+            que descomponen materia orgánica muerta, reciclando nutrientes.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Sección 5: Importancia de la Biodiversidad -->
+      <section>
+        <h2>Importancia de la Biodiversidad</h2>
+        <p>
+          La biodiversidad es la variedad de seres vivos que habitan nuestro
+          planeta. Es esencial para mantener el equilibrio de los ecosistemas,
+          ya que cada organismo cumple un papel importante en la cadena
+          alimentaria y en el reciclaje de nutrientes. La pérdida de
+          biodiversidad puede afectar la salud del medio ambiente y la calidad
+          de vida de los seres humanos.
+        </p>
+      </section>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+      <p>&copy; 2025 Documentación en Biología para 6º Grado</p>
+    </footer>
+  </body>
+</html>

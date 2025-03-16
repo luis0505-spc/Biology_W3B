@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rompecabezas Animal - Ficha por Ficha</title>
+    <style>
+      :root {
+        --primary-color: #1e1e2f;
+        --secondary-color: #283044;
+        --accent-color: #e94560;
+        --text-light: #f5f5f5;
+        --transition-speed: 0.3s;
+        --nav-height: 70px;
+      }
+
+      /* Reset básico */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Sin scroll */
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, var(--primary-color), #2b2d42);
+        color: var(--text-light);
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Barra de navegación fija */
+      .main-nav {
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        height: var(--nav-height);
+        align-items: center;
+      }
+      .nav-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--secondary-color);
+        border: none;
+        border-radius: 2rem;
+        cursor: pointer;
+        color: var(--text-light);
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid transparent;
+      }
+      .nav-btn:hover {
+        background: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Contenedor principal sin scroll */
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - var(--nav-height));
+        padding: 1rem;
+      }
+
+      /* Área principal dividida en 3 columnas */
+      .game-content {
+        flex: 1;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .piece-column,
+      .board-column,
+      .info-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .piece-column {
+        width: 120px;
+      }
+      .board-column {
+        width: 320px;
+      }
+      .info-column {
+        width: 320px;
+      }
+
+      /* Contenedor para el placeholder (tablero) */
+      .puzzle-board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 5px;
+      }
+      .drop-zone {
+        width: 100px;
+        height: 100px;
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        transition: border-color var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* Al soltar la ficha incorrecta, se marca en rojo y se sacude */
+      .drop-zone.error {
+        border-color: red;
+      }
+      .shake {
+        animation: shake 0.5s;
+      }
+      @keyframes shake {
+        0% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(2px, 0);
+        }
+        50% {
+          transform: translate(-2px, 0);
+        }
+        75% {
+          transform: translate(2px, 0);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      /* Ficha del rompecabezas */
+      .puzzle-piece {
+        width: 100px;
+        height: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        cursor: grab;
+        transition: transform var(--transition-speed) ease;
+        background-repeat: no-repeat;
+        background-size: 300%; /* imagen dividida en 3x3 */
+      }
+      .puzzle-piece:active {
+        transform: scale(1.1);
+      }
+
+      /* Panel de información */
+      #info-panel {
+        background: rgba(255, 255, 255, 0.98);
+        color: black;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(8px);
+        animation: slideIn 0.3s ease-out;
+        width: 100%;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Botones de categoría en la parte inferior */
+      .category-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .game-content {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .piece-column,
+        .board-column,
+        .info-column {
+          width: 90%;
+        }
+        #info-panel {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Barra de navegación -->
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        🌍 Planeta Tierra
+      </button>
+      <button class="nav-btn" onclick="window.location.href='humano.html'">
+        👤 Cuerpo Humano
+      </button>
+      <button class="nav-btn" onclick="window.location.href='animals.html'">
+        🐾Animales
+      </button>
+      <button class="nav-btn" onclick="window.location.href='document.html'">
+        📂Documentación
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='cadenaAlimenticia.html'"
+      >
+        ♻️Cadena Alimenticia
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='Biogeoquimicos.html'"
+      >
+        ☢️Biogeoquímicos
+      </button>
+      <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+        🐾Seres Vivos
+      </button>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+      <!-- Área de juego: 3 columnas -->
+      <div class="game-content">
+        <!-- Columna IZQUIERDA: Ficha actual (aparece una por una) -->
+        <div class="piece-column">
+          <div id="current-piece-container"></div>
+        </div>
+        <!-- Columna CENTRAL: Tablero con placeholders -->
+        <div class="board-column">
+          <div id="puzzle-board" class="puzzle-board"></div>
+        </div>
+        <!-- Columna DERECHA: Información (concepto) del animal -->
+        <div class="info-column">
+          <div id="info-panel">
+            <h2>Información del Animal</h2>
+            <div id="animal-info">
+              <p>
+                Selecciona una categoría y arma el rompecabezas para ver la
+                información.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Botones de categoría -->
+      <div class="category-buttons">
+        <button class="nav-btn" onclick="startPuzzle('mamiferos')">
+          Mamíferos
+        </button>
+        <button class="nav-btn" onclick="startPuzzle('aves')">Aves</button>
+        <button class="nav-btn" onclick="startPuzzle('reptiles')">
+          Reptiles
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Variables globales
+      let currentAnimal = null;
+      let puzzlePieces = [];
+      let currentPieceIndex = 0;
+      let currentDraggedPiece = null;
+      const gridSize = 3;
+      const pieceSize = 100; // en píxeles
+
+      // Datos de animales organizados por categoría
+      const animales = {
+        mamiferos: [
+          {
+            imagen: "assets/animals/lion.webp",
+            descripcion:
+              "El león es un mamífero carnívoro que vive en manadas. Conocido como el rey de la sabana, su melena lo hace inconfundible. Es esencial conservarlos para mantener el equilibrio ecológico.",
+          },
+          {
+            imagen: "assets/animals/delfin.png",
+            descripcion:
+              "El delfín es un mamífero marino inteligente y sociable. Se comunica con sonidos y vive en grupos. Utiliza la ecolocación para orientarse y cazar.",
+          },
+          {
+            imagen: "assets/animals/murcielago.png",
+            descripcion:
+              "El murciélago es el único mamífero que puede volar. Usa la ecolocación para navegar y cazar, además de ayudar a controlar insectos y polinizar plantas.",
+          },
+          {
+            imagen: "assets/animals/elefante.webp",
+            descripcion:
+              "El elefante es uno de los animales terrestres más grandes. Tiene una trompa larga, grandes orejas y colmillos; es muy inteligente y vive en grupos familiares.",
+          },
+        ],
+        aves: [
+          {
+            imagen: "assets/animals/ave1.jpg",
+            descripcion:
+              "Esta ave se distingue por sus colores vibrantes y su canto melodioso, lo que la hace fácil de identificar en la naturaleza.",
+          },
+          {
+            imagen: "assets/animals/ave2.jpg",
+            descripcion:
+              "Un ave rapaz con una vista excepcional que le permite detectar presas desde grandes alturas.",
+          },
+          {
+            imagen: "assets/animals/ave3.jpg",
+            descripcion:
+              "Esta ave migratoria recorre grandes distancias cada año, adaptándose a distintos climas y paisajes.",
+          },
+          {
+            imagen: "assets/animals/ave4.jpg",
+            descripcion:
+              "Conocida por su canto al amanecer, esta ave es símbolo de la llegada de un nuevo día.",
+          },
+        ],
+        reptiles: [
+          {
+            imagen: "assets/animals/reptil1.jpg",
+            descripcion:
+              "Un reptil venenoso que habita en la selva. Su picadura puede ser peligrosa si no se toman precauciones.",
+          },
+          {
+            imagen: "assets/animals/reptil2.jpg",
+            descripcion:
+              "Este reptil es famoso por su capacidad para cambiar de color, lo que le permite camuflarse en su entorno.",
+          },
+          {
+            imagen: "assets/animals/reptil3.jpg",
+            descripcion:
+              "Ágil y acuático, este reptil se mueve con rapidez en el agua y es un excelente nadador.",
+          },
+          {
+            imagen: "assets/animals/reptil4.jpg",
+            descripcion:
+              "Con un caparazón muy resistente, este reptil se protege de depredadores y se adapta a climas áridos.",
+          },
+        ],
+      };
+
+      // Inicia el rompecabezas para la categoría elegida
+      function startPuzzle(categoria) {
+        // Selecciona aleatoriamente un animal
+        const lista = animales[categoria];
+        currentAnimal = lista[Math.floor(Math.random() * lista.length)];
+
+        // Crea el tablero (placeholders) en el centro
+        const puzzleBoard = document.getElementById("puzzle-board");
+        puzzleBoard.innerHTML = "";
+        for (let i = 0; i < gridSize * gridSize; i++) {
+          const dropZone = document.createElement("div");
+          dropZone.classList.add("drop-zone");
+          dropZone.dataset.index = i; // posición correcta
+          dropZone.addEventListener("dragover", allowDrop);
+          dropZone.addEventListener("drop", drop);
+          puzzleBoard.appendChild(dropZone);
+        }
+
+        // Crea las fichas del rompecabezas (todas en un array)
+        puzzlePieces = [];
+        for (let i = 0; i < gridSize * gridSize; i++) {
+          const piece = document.createElement("div");
+          piece.classList.add("puzzle-piece");
+          piece.draggable = true;
+          piece.dataset.index = i; // posición correcta de la ficha
+          piece.style.backgroundImage = `url(${currentAnimal.imagen})`;
+          piece.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+          const row = Math.floor(i / gridSize);
+          const col = i % gridSize;
+          piece.style.backgroundPosition = `-${col * pieceSize}px -${
+            row * pieceSize
+          }px`;
+          piece.addEventListener("dragstart", dragStart);
+          piece.addEventListener("dragend", dragEnd);
+          puzzlePieces.push(piece);
+        }
+        // Mezcla las fichas para presentarlas en orden aleatorio
+        puzzlePieces = shuffleArray(puzzlePieces);
+        currentPieceIndex = 0;
+        document.getElementById("current-piece-container").innerHTML = "";
+        showNextPiece();
+        // Reinicia la información (concepto) hasta completar el puzzle
+        document.getElementById("animal-info").innerHTML =
+          "<p>Arma el rompecabezas para ver la información.</p>";
+      }
+
+      // Muestra la siguiente ficha en la columna izquierda (si existe)
+      function showNextPiece() {
+        const container = document.getElementById("current-piece-container");
+        container.innerHTML = "";
+        if (currentPieceIndex < puzzlePieces.length) {
+          container.appendChild(puzzlePieces[currentPieceIndex]);
+        }
+      }
+
+      // Algoritmo de mezcla (Fisher-Yates)
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Inicio del arrastre
+      function dragStart(e) {
+        currentDraggedPiece = e.target;
+        e.dataTransfer.setData("text/plain", e.target.dataset.index);
+        e.dataTransfer.effectAllowed = "move";
+        e.target.style.opacity = "0.5";
+      }
+
+      // Fin del arrastre
+      function dragEnd(e) {
+        if (currentDraggedPiece) {
+          currentDraggedPiece.style.opacity = "1";
+        }
+        currentDraggedPiece = null;
+      }
+
+      // Permitir soltar en el placeholder
+      function allowDrop(e) {
+        e.preventDefault();
+      }
+
+      // Al soltar la ficha en un placeholder
+      function drop(e) {
+        e.preventDefault();
+        const dropZone = e.currentTarget;
+        // Evitar sobreescribir un placeholder ya ocupado
+        if (dropZone.childElementCount > 0) return;
+        const pieceIndex = e.dataTransfer.getData("text/plain");
+        const dropIndex = dropZone.dataset.index;
+        if (pieceIndex === dropIndex) {
+          // Colocación correcta: se “encaja” la ficha
+          dropZone.appendChild(currentDraggedPiece);
+          currentDraggedPiece.draggable = false;
+          currentPieceIndex++; // Avanza a la siguiente ficha
+          showNextPiece();
+          checkPuzzleComplete();
+        } else {
+          // Colocación incorrecta: resalta el placeholder en rojo y sacúdelo
+          dropZone.classList.add("error");
+          dropZone.classList.add("shake");
+          setTimeout(() => {
+            dropZone.classList.remove("error");
+            dropZone.classList.remove("shake");
+          }, 500);
+        }
+      }
+
+      // Verifica si se completó el rompecabezas
+      function checkPuzzleComplete() {
+        const dropZones = document.querySelectorAll(".drop-zone");
+        let complete = true;
+        dropZones.forEach((zone) => {
+          if (zone.childElementCount === 0) {
+            complete = false;
+          }
+        });
+        if (complete) {
+          showAnimalInfo();
+        }
+      }
+
+      // Muestra la información (concepto) del animal en la columna derecha
+      function showAnimalInfo() {
+        const infoPanel = document.getElementById("animal-info");
+        infoPanel.innerHTML = `<p>${currentAnimal.descripcion}</p>`;
+      }
+    </script>
+  </body>
+</html>

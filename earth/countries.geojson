@@ -1,0 +1,90 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Región Andina",
+        "ciudades": ["Bogotá", "Medellín"],
+        "ecosistemas": ["Manguera", "Selva tropical"],
+        "fauna": ["Canguro", "Tiburón"],
+        "flora": ["Zanahoria", "Mango"]
+      },
+      "geometry": {
+        "coordinates": [
+          -74.68644209305467,
+          5.769801789173215
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Región Pacífica",
+        "ciudades": ["Lima", "Arequipa"],
+        "ecosistemas": ["Cordillera", "Selva tropical"],
+        "fauna": ["Caimán", "Tiburón"],
+        "flora": ["Zanahoria", "Mango"]
+      },
+      "geometry": {
+        "coordinates": [
+          -77.00330683799707,
+          5.418570361233989
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Región Orinoquía",
+        "ciudades": ["San José", "Cayambe"],
+        "ecosistemas": ["Manguera", "Selva tropical"],
+        "fauna": ["Caimán", "Tiburón"],
+        "flora": ["Zanahoria", "Mango"]
+      },
+      "geometry": {
+        "coordinates": [
+          -69.88856166812165,
+          5.49419945939438
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Región Amazónica",
+        "ciudades": ["Quito", "Guayaquil"],
+        "ecosistemas": ["Manguera", "Selva tropical"],
+        "fauna": ["Caimán", "Tiburón"],
+        "flora": ["Zanahoria", "Mango"]
+      },
+      "geometry": {
+        "coordinates": [
+          -70.40372735272793,
+          2.294692604361373
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Región Caribe",
+        "ciudades": ["Cartagena", "Barranquilla", "Santa Marta"],
+        "ecosistemas": ["Manglares", "Playas"],
+        "fauna": ["Cangrejo de río", "Iguana"],
+        "flora": ["Cocoteros", "Mangle rojo"]
+      },
+      "geometry": {
+        "coordinates": [
+          -75.13235119942657,
+          9.885645456361374
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}

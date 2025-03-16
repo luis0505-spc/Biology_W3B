@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Software Educativo de Biología</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  </head>
+  <body>
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'">
+        🌍 Planeta Tierra
+      </button>
+      <button class="nav-btn" onclick="window.location.href='humano.html'">
+        👤 Cuerpo Humano
+      </button>
+      <button class="nav-btn" onclick="window.location.href='animals.html'">
+        🐾Animales
+      </button>
+      <button class="nav-btn" onclick="window.location.href='document.html'">
+        📂Documentación
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='cadenaAlimenticia.html'"
+      >
+        ♻️Cadena Alimenticia
+      </button>
+      <button
+        class="nav-btn"
+        onclick="window.location.href='Biogeoquimicos.html'"
+      >
+        ☢️Biogeoquímicos
+      </button>
+      <button class="nav-btn" onclick="window.location.href='seresvivos.html'">
+        🐾Seres Vivos
+      </button>
+    </nav>
+
+    <!-- Sección del Planeta -->
+    <div id="earth-section" class="section">
+      <div id="earth-container"></div>
+      <div id="info-panel">
+        <h2 id="country-name">Selecciona una Región de Colombia</h2>
+        <div id="ecosystems"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
